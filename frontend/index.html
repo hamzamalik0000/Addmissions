@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PakAdmissions — Find Your Perfect College in Pakistan</title>
+    <meta
+      name="description"
+      content="Pakistan's leading college admission platform. Browse 500+ colleges, calculate your merit, apply online, and get accepted. Free for students."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="loading-screen" class="loading-screen">
+      <div class="loader-content">
+        <div class="loader-logo">
+          <span class="loader-flag">🇵🇰</span>
+          <span class="loader-brand">PakAdmissions</span>
+        </div>
+        <div class="spinner"></div>
+        <p class="loader-tagline">Loading your future...</p>
+      </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <div id="auth-page" class="auth-page hidden">
+      <div class="auth-bg">
+        <div class="floating-shape s1"></div>
+        <div class="floating-shape s2"></div>
+        <div class="floating-shape s3"></div>
+        <div class="floating-shape s4"></div>
+      </div>
+      <div class="auth-container">
+        <div class="auth-left">
+          <div class="auth-brand">
+            <span class="brand-flag">🇵🇰</span>
+            <h1 class="brand-name">PakAdmissions</h1>
+          </div>
+          <p class="auth-tagline">Find Your Perfect College</p>
+          <div class="auth-stats">
+            <div class="stat-item">
+              <span class="stat-num">500+</span>
+              <span class="stat-lbl">Colleges</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num">10K+</span>
+              <span class="stat-lbl">Students</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num">50+</span>
+              <span class="stat-lbl">Cities</span>
+            </div>
+          </div>
+          <ul class="auth-features">
+            <li>
+              <i class="fas fa-check-circle"></i> Merit-based college matching
+            </li>
+            <li><i class="fas fa-check-circle"></i> Online admission tests</li>
+            <li>
+              <i class="fas fa-check-circle"></i> Real-time application tracking
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i> Compare colleges side by side
+            </li>
+          </ul>
+        </div>
+
+        <div class="auth-right">
+          <div class="role-toggle">
+            <button
+              id="btn-role-student"
+              class="role-btn active"
+              onclick="authUI.setRole('student')"
+            >
+              <i class="fas fa-user-graduate"></i> Student
+            </button>
+            <button
+              id="btn-role-college"
+              class="role-btn"
+              onclick="authUI.setRole('college')"
+            >
+              <i class="fas fa-university"></i> College Admin
+            </button>
+          </div>
+
+          <div class="auth-tabs">
+            <button
+              id="tab-login"
+              class="auth-tab active"
+              onclick="authUI.showTab('login')"
+            >
+              Login
+            </button>
+            <button
+              id="tab-register"
+              class="auth-tab"
+              onclick="authUI.showTab('register')"
+            >
+              Register
+            </button>
+          </div>
+
+          <form
+            id="login-form"
+            class="auth-form"
+            onsubmit="authUI.handleLogin(event)"
+          >
+            <h2 class="form-title">Welcome Back</h2>
+            <p class="form-subtitle">
+              Sign in to continue your admission journey
+            </p>
+            <div class="form-group">
+              <label for="login-email"
+                ><i class="fas fa-envelope"></i> Email</label
+              >
+              <input
+                type="email"
+                id="login-email"
+                placeholder="your@email.com"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="login-password"
+                ><i class="fas fa-lock"></i> Password</label
+              >
+              <div class="input-with-icon">
+                <input
+                  type="password"
+                  id="login-password"
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  class="toggle-pw"
+                  onclick="authUI.togglePw('login-password', this)"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            <p class="demo-hint" id="login-demo-hint"></p>
+            <button type="submit" class="btn-primary btn-full">
+              <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+          </form>
+
+          <form
+            id="register-student-form"
+            class="auth-form hidden"
+            onsubmit="authUI.handleStudentRegister(event)"
+          >
+            <h2 class="form-title">Create Student Account</h2>
+            <div class="form-row">
+              <div class="form-group">
+                <label><i class="fas fa-user"></i> Full Name</label>
+                <input
+                  type="text"
+                  id="reg-s-name"
+                  placeholder="Ali Ahmed"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label><i class="fas fa-envelope"></i> Email</label>
+                <input
+                  type="email"
+                  id="reg-s-email"
+                  placeholder="ali@email.com"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label><i class="fas fa-id-card"></i> CNIC</label>
+                <input
+                  type="text"
+                  id="reg-s-cnic"
+                  placeholder="42201-1234567-1"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label><i class="fas fa-phone"></i> Phone</label>
+                <input
+                  type="tel"
+                  id="reg-s-phone"
+                  placeholder="03XX-XXXXXXX"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label><i class="fas fa-city"></i> City</label>
+                <select id="reg-s-city" required>
+                  <option value="">Select City</option>
+                  <option>Lahore</option>
+                  <option>Karachi</option>
+                  <option>Islamabad</option>
+                  <option>Rawalpindi</option>
+                  <option>Peshawar</option>
+                  <option>Quetta</option>
+                  <option>Multan</option>
+                  <option>Faisalabad</option>
+                  <option>Hyderabad</option>
+                  <option>Sialkot</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label
+                  ><i class="fas fa-graduation-cap"></i> Matric Marks
+                  (/1100)</label
+                >
+                <input
+                  type="number"
+                  id="reg-s-matric"
+                  placeholder="950"
+                  min="0"
+                  max="1100"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label><i class="fas fa-book"></i> FSc Marks (/1100)</label>
+                <input
+                  type="number"
+                  id="reg-s-fsc"
+                  placeholder="980"
+                  min="0"
+                  max="1100"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <div class="input-with-icon">
+                  <input
+                    type="password"
+                    id="reg-s-pw"
+                    placeholder="••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="toggle-pw"
+                    onclick="authUI.togglePw('reg-s-pw', this)"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn-primary btn-full">
+              <i class="fas fa-user-plus"></i> Create Account
+            </button>
+          </form>
+
+          <form
+            id="register-college-form"
+            class="auth-form hidden"
+            onsubmit="authUI.handleCollegeRegister(event)"
+          >
+            <h2 class="form-title">Register Your College</h2>
+            <div class="form-row">
+              <div class="form-group">
+                <label><i class="fas fa-university"></i> College Name</label>
+                <input
+                  type="text"
+                  id="reg-c-name"
+                  placeholder="National University"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label><i class="fas fa-city"></i> City</label>
+                <select id="reg-c-city" required>
+                  <option value="">Select City</option>
+                  <option>Lahore</option>
+                  <option>Karachi</option>
+                  <option>Islamabad</option>
+                  <option>Rawalpindi</option>
+                  <option>Peshawar</option>
+                  <option>Quetta</option>
+                  <option>Multan</option>
+                  <option>Faisalabad</option>
+                  <option>Hyderabad</option>
+                  <option>Sialkot</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label><i class="fas fa-tag"></i> Type</label>
+                <select id="reg-c-type" required>
+                  <option value="">Select Type</option>
+                  <option>Public</option>
+                  <option>Private</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label><i class="fas fa-envelope"></i> Contact Email</label>
+                <input
+                  type="email"
+                  id="reg-c-email"
+                  placeholder="admin@college.edu.pk"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group" style="flex: 2">
+                <label><i class="fas fa-lock"></i> Admin Password</label>
+                <div class="input-with-icon">
+                  <input
+                    type="password"
+                    id="reg-c-pw"
+                    placeholder="••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="toggle-pw"
+                    onclick="authUI.togglePw('reg-c-pw', this)"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group" style="flex: 1">
+                <label><i class="fas fa-map-marker-alt"></i> Latitude</label>
+                <input
+                  type="number"
+                  id="reg-c-lat"
+                  placeholder="33.6461"
+                  step="0.0001"
+                  required
+                />
+              </div>
+              <div class="form-group" style="flex: 1">
+                <label><i class="fas fa-map-marker-alt"></i> Longitude</label>
+                <input
+                  type="number"
+                  id="reg-c-lng"
+                  placeholder="73.0793"
+                  step="0.0001"
+                  required
+                />
+              </div>
+            </div>
+            <button type="submit" class="btn-primary btn-full">
+              <i class="fas fa-plus-circle"></i> Register College
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="app" class="app-layout hidden">
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+          <span class="brand-flag">🇵🇰</span>
+          <span class="sidebar-brand">PakAdmissions</span>
+          <button
+            id="sidebar-close"
+            class="sidebar-close"
+            onclick="app.toggleSidebar()"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <nav id="sidebar-nav" class="sidebar-nav"></nav>
+        <div class="sidebar-footer">
+          <div class="sf-avatar" id="sf-avatar"></div>
+          <div class="sf-info">
+            <span class="sf-name" id="sf-name"></span>
+            <span class="sf-role" id="sf-role"></span>
+          </div>
+          <button class="sf-logout" onclick="app.logout()" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </aside>
+
+      <div
+        id="sidebar-overlay"
+        class="sidebar-overlay"
+        onclick="app.toggleSidebar()"
+      ></div>
+
+      <div class="main-area">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button class="hamburger" onclick="app.toggleSidebar()">
+              <i class="fas fa-bars"></i>
+            </button>
+            <h2 class="page-title" id="page-title">Dashboard</h2>
+          </div>
+          <div class="topbar-right">
+            <button
+              class="topbar-btn"
+              id="dark-mode-btn"
+              onclick="app.toggleDarkMode()"
+              title="Toggle Dark Mode"
+            >
+              <i class="fas fa-moon"></i>
+            </button>
+            <button
+              class="topbar-btn notif-btn"
+              onclick="app.navigate('notifications')"
+              title="Notifications"
+            >
+              <i class="fas fa-bell"></i>
+              <span class="notif-badge hidden" id="notif-badge">0</span>
+            </button>
+            <div
+              class="user-avatar"
+              id="topbar-avatar"
+              onclick="app.navigate('profile')"
+            ></div>
+          </div>
+        </header>
+
+        <main id="view-container" class="view-container"></main>
+      </div>
+    </div>
+
+    <div
+      id="modal-overlay"
+      class="modal-overlay hidden"
+      onclick="app.closeModal(event)"
+    >
+      <div class="modal-box" id="modal-box">
+        <button class="modal-close" onclick="app.closeModal()">
+          <i class="fas fa-times"></i>
+        </button>
+        <div id="modal-content"></div>
+      </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/student.js"></script>
+    <script src="js/college.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
